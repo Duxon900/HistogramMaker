@@ -25,24 +25,43 @@ class List:
 
             valList = [value]
 
-            while nextVal < max:
+            while nextVal < self.maxi:
                 timesAppear = self.totalCalc(nextVal, decimal.Decimal(nextVal) + decimal.Decimal(partition))
                 elem = Values("[" + str(nextVal) + " - " + str(nextVal + partition) + ")", timesAppear,
                               timesAppear / len(self.list),
-                              decimal.Decimal(str(timesAppear / len(self.list))) + decimal.Decimal(str(previousPerStack)))
+                              decimal.Decimal(str(timesAppear / len(self.list))) + decimal.Decimal(
+                                  str(previousPerStack)))
 
                 nextVal = decimal.Decimal(str(nextVal)) + decimal.Decimal(str(partition))  # update nextVal
                 previousPerStack = elem.percStack  # previous elems Stacked percentage
                 valList.append(elem)  # add the element to the array
 
-            for x in valList:
-                print(x)
+            for elem in range(len(valList)):
+                # section
+                e1 = Entry(root, width=20)
+                e1.grid(column=1, row=elem + 3)
+                e1.insert(END, valList[elem].section)
+
+                # total
+                e2 = Entry(root, width=25)
+                e2.grid(column=2, row=elem + 3)
+                e2.insert(END, valList[elem].total)
+
+                # percentage
+                e3 = Entry(root, width=20)
+                e3.grid(column=3, row=elem + 3)
+                e3.insert(END, valList[elem].percentage)
+
+                # percStack
+                e4 = Entry(root, width=20)
+                e4.grid(column=4, row=elem + 3)
+                e4.insert(END, valList[elem].percStack)
 
         else:
             print('txorizo')
 
     def totalCalc(self, num1, num2):
-        #how many numbers are there between the given values
+        # how many numbers are there between the given values
         count = 0
         for x in self.list:
             if num1 <= x < num2:
@@ -69,27 +88,24 @@ def checkPressed():
 
 root = Tk()
 # Set Tkinter Size And Location
-root.geometry("500x500")
+root.geometry("800x500")
 
 # Set Tkinter Title
 root.title("Histogram Maker")
 
-mainLabel = Label(root)
-mainLabel["text"] = "Histogram Maker app"
-mainLabel.pack()
+# label
+mainLabel = Label(root, text="Histogram Maker app")
+mainLabel.grid(row=1, column=1)
 
-inputtxt = Text(root)
-inputtxt["height"] = 10
-inputtxt["width"] = 25
-inputtxt["bg"] = "light pink"
-inputtxt.pack()
+# text label
+inputtxt = Text(root, height=10, width=25, bg="light pink")
+inputtxt.grid(row=1, column=2)
 
-btnCheck = Button(root)
-btnCheck["text"] = "Check"
-btnCheck["command"] = lambda :checkPressed()
-btnCheck["height"] = 2
-btnCheck["width"] = 10
-btnCheck.pack()
+# check button
+btnCheck = Button(root, text="Check", command=lambda: checkPressed(), height=2, width=10)
+btnCheck.grid(row=1, column=3)
+
+# result table
 
 mainloop()
 
